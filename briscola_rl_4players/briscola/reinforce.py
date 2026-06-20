@@ -117,8 +117,7 @@ def collect_episode(
     for step in steps:
         step.reward_to_go = sum(rewards[step.global_index :])
 
-    score_diff = env.score_difference_for_team(learner_team)
-    episode_return = steps[0].reward_to_go if steps else 0.0
+    episode_return = sum(rewards)
     return EpisodeResult(
         steps=steps,
         rewards=rewards,
@@ -204,4 +203,3 @@ def reinforce_update(
         mean_score_diff=mean(score_diffs),
         gradient_norm=norm,
     )
-
