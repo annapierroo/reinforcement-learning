@@ -301,6 +301,12 @@ class BriscolaFeatureExtractor:
         card: Card,
         observed: set[Card],
     ) -> int:
+        if card.suit != trump_suit:
+            return sum(
+                1
+                for other in make_deck()
+                if other.suit == trump_suit and other not in observed
+            )
         return sum(
             1
             for other in make_deck()
