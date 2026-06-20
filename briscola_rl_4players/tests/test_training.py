@@ -1,8 +1,10 @@
 import random
 import unittest
 
+from briscola.baselines import RandomPolicy
 from briscola.features import BriscolaFeatureExtractor
 from briscola.policies import LinearSoftmaxPolicy
+from briscola.reinforce import RewardConfig, collect_episode, terminal_reward
 from briscola.self_play import SelfPlayConfig, SelfPlayTrainer, SnapshotPool
 
 

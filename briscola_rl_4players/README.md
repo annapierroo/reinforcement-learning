@@ -21,6 +21,123 @@ The project does **not** aim to solve Briscola mathematically or compute a Nash
 equilibrium. The objective is to build and evaluate a robust policy that performs
 better than random, greedy, and simple heuristic baselines.
 
+## Quick Setup
+
+Recommended Python version:
+
+```bash
+python 3.11+
+```
+
+The project has been tested with Python 3.12. Minimal runtime and test
+dependencies are:
+
+```text
+numpy
+pytest
+pyyaml
+```
+
+Optional notebook dependencies are:
+
+```text
+jupyter
+matplotlib
+pandas
+```
+
+Create and activate a virtual environment:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+```
+
+Install minimal dependencies:
+
+```bash
+pip install numpy pytest pyyaml
+```
+
+Install optional notebook dependencies:
+
+```bash
+pip install jupyter matplotlib pandas
+```
+
+Run all tests from this folder:
+
+```bash
+PYTHONPATH=. pytest
+```
+
+Expected result:
+
+```text
+16 passed
+```
+
+Run a training job:
+
+```bash
+PYTHONPATH=. python scripts/train.py --config configs/train_pool_selfplay.yaml
+```
+
+Other training configs:
+
+```text
+configs/train_random.yaml
+configs/train_latest_only.yaml
+configs/train_pool_selfplay.yaml
+```
+
+Run evaluation:
+
+```bash
+PYTHONPATH=. python scripts/evaluate.py --config configs/eval.yaml
+```
+
+Start the local playable web interface:
+
+```bash
+PYTHONPATH=. python scripts/play_web.py
+```
+
+Then open:
+
+```text
+http://127.0.0.1:8000
+```
+
+Generated files such as checkpoints, logs, JSON results, plots, caches, and
+virtual environments should not be committed.
+
+## Project Structure
+
+```text
+briscola/
+  Core environment, cards, rules, observations, policies, features, REINFORCE.
+
+configs/
+  YAML configs for training and evaluation.
+
+scripts/
+  CLI entry points for training, evaluation, and web play.
+
+tests/
+  Unit tests for rules, environment, observations, policies, and training.
+
+notebooks/
+  Analysis notebook.
+
+web/
+  Static frontend for the playable demo.
+
+experiments/
+  Output folders for logs, checkpoints, plots, and evaluation artifacts.
+```
+
 ## Core Idea
 
 All players use the same **policy architecture**, but not the same live

@@ -66,6 +66,7 @@ def evaluate_team_match(
 
     point_differences: list[int] = []
     outcomes: list[int] = []
+    per_seed_point_differences: list[float] = []
 
     for seed in seeds:
         result = play_match(
@@ -75,6 +76,7 @@ def evaluate_team_match(
         )
         point_differences.append(result.point_diff_team_a)
         outcomes.append(_outcome_from_difference(result.point_diff_team_a))
+        seed_differences = [result.point_diff_team_a]
 
         if paired:
             swapped = play_match(
@@ -87,13 +89,16 @@ def evaluate_team_match(
             perspective_diff = -swapped.point_diff_team_a
             point_differences.append(perspective_diff)
             outcomes.append(_outcome_from_difference(perspective_diff))
+            seed_differences.append(perspective_diff)
+
+        per_seed_point_differences.append(mean(seed_differences))
 
     games = len(point_differences)
     wins = sum(1 for outcome in outcomes if outcome > 0)
     draws = sum(1 for outcome in outcomes if outcome == 0)
     losses = sum(1 for outcome in outcomes if outcome < 0)
     avg = mean(point_differences)
-    stderr = _standard_error(point_differences)
+    stderr = _standard_error(per_seed_point_differences)
     interval = (avg - 1.96 * stderr, avg + 1.96 * stderr)
 
     return EvaluationResult(
@@ -139,4 +144,3 @@ def _standard_error(values: list[int]) -> float:
     if len(values) <= 1:
         return 0.0
     return pstdev(values) / math.sqrt(len(values))
-
