@@ -726,17 +726,22 @@ Recommended pool parameters:
 ```text
 max_pool_size = 20
 snapshot_interval = 50 updates
+pool_best_count = 4
+pool_recent_count = 10
+pool_eval_games = optional
 sampling = uniform
 ```
 
 If the pool exceeds the maximum size, keep:
 
 - the initial snapshot;
-- the best evaluated snapshot;
+- the best evaluated snapshots, when evaluation scores are available;
 - a few recent snapshots;
 - a time-spaced subset of older snapshots.
 
 This avoids both overfitting to the latest policy and uncontrolled pool growth.
+If `pool_eval_games` is zero, no external score is assigned and the pool still
+keeps diversity through recent and time-spaced historical snapshots.
 
 ## Hyperparameters
 
@@ -1187,6 +1192,10 @@ python3 scripts/train.py \
   --batch-size 100 \
   --learning-rate 0.01 \
   --snapshot-interval 10 \
+  --max-pool-size 20 \
+  --pool-best-count 4 \
+  --pool-recent-count 10 \
+  --pool-eval-games 20 \
   --output experiments/results/checkpoint.json \
   --log experiments/results/train_log.jsonl
 ```
