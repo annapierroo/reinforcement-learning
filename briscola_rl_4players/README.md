@@ -1251,9 +1251,33 @@ http://127.0.0.1:8000
 ```
 
 The human plays as `P1` on Team A. `P3` is the partner, while `P2` and `P4`
-are opponents. The interface supports random, greedy, and heuristic bot
-policies. After each human move, the server automatically advances all bot
-turns until the next human decision or the end of the match.
+are opponents. The interface supports random, greedy, heuristic, and trained
+learner-checkpoint bot policies.
+
+The UI lets you choose:
+
+- policy for `P2`, the first opponent;
+- policy for `P3`, the partner;
+- policy for `P4`, the second opponent;
+- learner checkpoint path, by default `experiments/results/checkpoint.json`;
+- stochastic or greedy bot action selection.
+- whether learner bots should be updated after each completed human game;
+- the small web-interface learning rate used for that online update.
+
+To play with the learner, set `P3 Partner` to `Learner checkpoint`. To play
+against the learner, set `P2 Opponent`, `P4 Opponent`, or both to
+`Learner checkpoint`.
+
+After each human move, the server automatically advances all bot turns until
+the next human decision or the end of the match. The table highlights the
+current player and shows each bot's policy under its seat label.
+
+If `Learn after game` is enabled and at least one bot is using `Learner
+checkpoint`, the interface applies a small REINFORCE update to the learner at
+the end of the match. The update is kept in server memory, so pressing `New Game
+with Updated Learner` starts another match with the updated parameters. This
+interactive update is meant for demonstration and inspection; official
+evaluation should still use frozen checkpoints with no online updates.
 
 ## Development Phases
 
